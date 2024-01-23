@@ -61,21 +61,17 @@
    <script setup>
    import axios from "./../../axios";
    import { toast } from 'vue3-toastify';
-   import { userDataStore } from '/src/storeState/userData';
-   import { ref, computed } from 'vue'
+   import { ref } from 'vue'
    import 'vue3-toastify/dist/index.css';
    import { useRouter } from 'vue-router';
 
    
-   const email = ref('')
-   const password = ref('')
-   const store = userDataStore();
    let selectedRow = ref([''])
     const router = useRouter();
 
    selectedRow.value.roleId = "artistmanager"
    
-   const handleSubmit = async(item) => {
+   const handleSubmit = async() => {
        try {
            let response = await axios.post('users', {
             user:{

@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in allMusicData">
+        <tr v-for="item in allMusicData" v-bind:key="item.musicId">
           <td>{{item.title}}</td>
           <td>{{item.genre}}</td>
           <td>{{item.album}}</td>
@@ -33,7 +33,7 @@
 import { userDataStore } from '/src/storeState/userData.js';
 import axios from "./../../axios";
 import { toast } from 'vue3-toastify';
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import 'vue3-toastify/dist/index.css';
 import { useRouter } from 'vue-router';
 const router = useRouter();

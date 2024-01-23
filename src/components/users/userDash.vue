@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in store.allUserData">
+        <tr v-for="item in store.allUserData" v-bind:key="item.userId">
           <td>{{item.fname}}</td>
           <td>{{item.lname}}</td>
           <td>{{item.email}}</td>
@@ -35,14 +35,11 @@
 import { userDataStore } from '/src/storeState/userData.js';
 import axios from "./../../axios";
 import { toast } from 'vue3-toastify';
-import { ref, computed } from 'vue'
 import 'vue3-toastify/dist/index.css';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const store = userDataStore();
-
-const selectedRow = ref(null);
 
 const fetchPeople = async () => {
     try {
@@ -83,23 +80,8 @@ const deleteUser = async (item) => {
 
 const toggleEdit = (item) => {
     store.selecTedUser =item
-    router.push('/oof');
+    router.push('/userUpdate');
 };
-
-const deleteRow = (row) => {
-    isOpen1.value = true;
-    store.selectedRow.value = row;
-};
-
-
-const getCurrentDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1 // months are 0-indexed
-    const day = today.getDate()
-
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
-}
 </script>
 
 <style scoped>

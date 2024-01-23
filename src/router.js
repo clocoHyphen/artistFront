@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import userDash from './components/users/userDash.vue';
-import login from './components/users/login.vue';
-import oof from './components/users/oof.vue';
+import loginUser from './components/users/loginUser.vue';
+import userUpdate from './components/users/userUpdate.vue';
 import newUser from './components/users/newUser.vue';
 import newMusic from './components/music/newMusic.vue';
 import musicDash from './components/music/musicDash.vue';
@@ -15,8 +15,8 @@ const routes = [
   { path: '/', component: welcome },
   { path: '/home', component: welcome },
   { path: '/userDash', component: userDash, beforeEnter: checkUserRole(['admin']) },
-  { path: '/login', component: login },
-  { path: '/oof', component: oof },
+  { path: '/loginUser', component: loginUser },
+  { path: '/userUpdate', component: userUpdate },
   { path: '/newUser', component: newUser, beforeEnter: checkUserRole(['admin']) },
   { path: '/newArtist', component: newArtist, beforeEnter: checkUserRole(['artistmanager']) },
   { path: '/newMusic', component: newMusic, beforeEnter: checkUserRole(['artist']) },

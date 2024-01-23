@@ -51,27 +51,25 @@
 import axios from "./../../axios";
 import { toast } from 'vue3-toastify';
 import { userDataStore } from '/src/storeState/userData';
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import 'vue3-toastify/dist/index.css';
 
-const email = ref('')
-const password = ref('')
 const store = userDataStore();
 let selectedRow = ref([''])
 
-selectedRow = store.selecTedUser
+selectedRow.value = store.selecTedUser
 
 const handleSubmit = async() => {
 
     try {
-        let response = await axios.put('users/'+ selectedRow.userId, {
-          fname: selectedRow.fname,
-          lname: selectedRow.lname,
-          email: selectedRow.email,
-          phone: selectedRow.phone,
-          gender: selectedRow.gender,
-          date_of_birth: selectedRow.dob,
-          address: selectedRow.address,
+        let response = await axios.put('users/'+ selectedRow.value.userId, {
+          fname: selectedRow.value.fname,
+          lname: selectedRow.value.lname,
+          email: selectedRow.value.email,
+          phone: selectedRow.value.phone,
+          gender: selectedRow.value.gender,
+          date_of_birth: selectedRow.value.dob,
+          address: selectedRow.value.address,
         });
 
         if (response) {

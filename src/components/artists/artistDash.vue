@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in store.allUserData">
+        <tr v-for="item in store.allUserData" v-bind:key="item.userId">
           <td>{{item.fname}}</td>
           <td>{{item.lname}}</td>
           <td>{{item.email}}</td>
@@ -33,14 +33,11 @@
 import { userDataStore } from '/src/storeState/userData.js';
 import axios from "./../../axios";
 import { toast } from 'vue3-toastify';
-import { ref, computed } from 'vue'
 import 'vue3-toastify/dist/index.css';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const store = userDataStore();
-
-const selectedRow = ref(null);
 
 const fetchArtist = async () => {
     try {
@@ -79,49 +76,6 @@ const deleteUser = async (item) => {
     fetchArtist()
 };
 
-const updateUser = async () => {
-    const submit_data = {
-        id: selectedRow.value.id,
-        fname: selectedRow.value.fname,
-        lname: selectedRow.value.lname,
-        email: selectedRow.value.email,
-        phone: selectedRow.value.phone,
-        gender: selectedRow.value.gender,
-        date_of_birth: selectedRow.value.date_of_birth,
-        address: selectedRow.value.address,
-    }
-    try {
-        const { data } = await useApi('updateUser', {
-            method: 'PUT',
-            body: submit_data
-            ,
-        });
-
-        if (data.value) {
-            toast.success('User Updated.');
-            isOpen.value = false;
-        } else {
-            toast.error('Something Went Wrong');
-        }
-    } catch (error) {
-        console.error(error);
-        toast.error('Failed to fetch user data');
-    }
-};
-
-const items = (row) =>
-    [
-        [
-            {
-                label: 'Edit',
-                icon: 'i-heroicons-pencil-square-20-solid',
-                click: () => toggleEdit(row)
-                //isOpen.value = true,
-            },
-        ],
-        [{ label: 'Delete', icon: 'i-heroicons-trash-20-solid', click: () => deleteRow(row) }],
-    ];
-
 const showSongs = (item) => {
     store.selecTedUser =item
     store.artistId = item.userId
@@ -133,20 +87,6 @@ const toggleEdit = (item) => {
 
 };
 
-const deleteRow = (row) => {
-    isOpen1.value = true;
-    store.selectedRow.value = row;
-};
-
-
-const getCurrentDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1 // months are 0-indexed
-    const day = today.getDate()
-
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
-}
 </script>
 
 <style scoped>

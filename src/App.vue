@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link>
-    <router-link v-if="!store.token" to="/login">Login</router-link>
+    <router-link v-if="!store.token" to="/loginUser">Login</router-link>
     <router-link v-if="store.userData?.role_id=='admin'" to="/userDash">User</router-link>
     <router-link v-if="store.userData?.role_id=='artistmanager'" to="/newArtist">New Artist</router-link>
     <router-link v-if="store.userData?.role_id=='admin'" to="/newUser">New User</router-link>

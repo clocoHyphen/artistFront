@@ -29,15 +29,13 @@
    import axios from "./../../axios";
    import { toast } from 'vue3-toastify';
    import { userDataStore } from '/src/storeState/userData';
-   import { ref, computed } from 'vue'
+   import { ref } from 'vue'
    import 'vue3-toastify/dist/index.css';
    
-   const email = ref('')
-   const password = ref('')
    const store = userDataStore();
    let selectedMusic = ref([''])
    
-   const handleSubmit = async(item) => {
+   const handleSubmit = async() => {
        try {
            let response = await axios.post('musics', {
             music:{
