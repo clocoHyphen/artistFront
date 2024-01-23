@@ -61,7 +61,7 @@ const router = useRouter()
 
 const handleSubmit = async () => {
   try {
-    let response = await axios.post('loginUser', {
+    let response = await axios.post('login', {
       email: email.value,
       password: password.value
     })

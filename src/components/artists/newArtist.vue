@@ -98,7 +98,9 @@ import { toast } from 'vue3-toastify'
 import { userDataStore } from '/src/storeState/userData'
 import { ref } from 'vue'
 import 'vue3-toastify/dist/index.css'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const store = userDataStore()
 let selectedRow = ref([''])
 
@@ -121,11 +123,12 @@ const handleSubmit = async () => {
 
     if (response) {
       toast.success('Artist Added.', {
-        autoClose: 1000
+        autoClose: 3000
       })
+      router.push("/artistDash")
     } else {
       toast.error('There was error.', {
-        autoClose: 10000
+        autoClose: 3000
       })
     }
   } catch (error) {
