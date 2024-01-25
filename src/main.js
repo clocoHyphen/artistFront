@@ -4,7 +4,7 @@ import piniaPersist from 'pinia-plugin-persist'
 import App from './App.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { createPinia } from 'pinia'
-import router from './router'
+import router from './router.js'
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
