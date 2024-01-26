@@ -15,6 +15,8 @@
             placeholder="textfield"
           />
           <label for="floatingFname">Fname</label>
+          <div class= "error-message" v-if="fnameErr">{{fnameErr}}</div>
+
         </div>
         <div class="form-floating">
           <input
@@ -28,13 +30,14 @@
         </div>
         <div class="form-floating">
           <input
-            type="email"
+            type="textfield"
             v-model="selectedRow.email"
             class="form-control"
             id="floatingInput"
             placeholder="name@example.com"
           />
           <label for="floatingInput">Email address</label>
+          <div class= "error-message" v-if="emailErr">{{emailErr}}</div>
         </div>
         <div class="form-floating">
           <input
@@ -113,6 +116,8 @@ import { useRouter } from 'vue-router'
 
 let selectedRow = ref([''])
 const router = useRouter()
+const emailErr = ref('')
+const fnameErr = ref('')
 
 selectedRow.value.roleId = 'artistmanager'
 
@@ -134,19 +139,51 @@ const handleSubmit = async () => {
 
     if (response) {
       toast.success('Added User Sucessfully.', {
-        autoClose: 1000
-      })
+        autoClose: 1000,
+        onClose: () => {
       router.push('/userDash')
+
+  }
+      })
     } else {
       toast.error('Error', {
         autoClose: 10000
       })
     }
   } catch (error) {
-    console.log(error.response.data)
-    toast.error(error.response.data, {
-      autoClose: 10000
-    })
+    emailErr.value = ""
+    fnameErr.value = ""
+    if(error.response?.data){
+      const errorData = error.response.data;
+    Object.entries(errorData).forEach(([fieldName, errors]) => {
+      const filteredErrors = errors.filter((error) => error !== undefined);
+
+      const errorMessage = filteredErrors.join(', ');
+
+      if (errorMessage.trim() !== '') {
+        if(fieldName!="fname") emailErr.value = errorMessage
+
+        if(fieldName=="fname") fnameErr.value = errorMessage
+
+        toast.error(fieldName + " " + errorMessage, {
+          autoClose: 10000
+        })
+      }
+    });
+    }
+    else{
+      toast.error('Something went wrong.', {
+          autoClose: 10000
+        })
+    }
   }
 }
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 5px;
+  font-size: 14px;
+}
+</style>

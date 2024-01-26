@@ -25,7 +25,7 @@ const routes = [
     component: musicDash,
     beforeEnter: checkUserRole(['artist', 'artistmanager'])
   },
-  { path: '/musicUpdate', component: musicUpdate, beforeEnter: checkUserRole(['artist']) },
+  { path: '/musicUpdate', component: musicUpdate, beforeEnter: checkUserRole(['artist','artistmanager']) },
   { path: '/artistDash', component: artistDash, beforeEnter: checkUserRole(['artistmanager']) }
 ]
 

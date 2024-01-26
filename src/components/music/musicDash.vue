@@ -20,7 +20,7 @@
         <td>{{ item.updated_at }}</td>
         <td>
           <button @click="toggleEdit(item)">Edit</button>
-          <button>Show</button>
+            <button @click="toggleEdit(item)">Show</button>
           <button @click="deleteMusic(item)">Delete</button>
         </td>
       </tr>

@@ -48,6 +48,9 @@ import { toast } from 'vue3-toastify'
 import { userDataStore } from '/src/storeState/userData'
 import { ref } from 'vue'
 import 'vue3-toastify/dist/index.css'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const store = userDataStore()
 const selectedMusic = ref([])
@@ -70,6 +73,7 @@ const handleSubmit = async () => {
       toast.success('Music Updated.', {
         autoClose: 1000
       })
+      router.push("/musicdash")
     } else {
       toast.error('Fail while saving data.', {
         autoClose: 10000

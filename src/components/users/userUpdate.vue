@@ -1,84 +1,15 @@
 <template>
   <div class="text-center p-5">
     <div class="d-flex justify-content-center">
-      <form
-        @submit.prevent="handleSubmit(this)"
-        style="border: 2px solid black; border-radius: 20px; padding: 30px; background-color: white"
-      >
+      <form @submit.prevent="handleSubmit(this)"
+        style="border: 2px solid black; border-radius: 20px; padding: 30px; background-color: white">
         <h1 class="h3 mb-3 fw-normal">User Update</h1>
-        <div class="form-floating">
-          <input
-            type="textfield"
-            v-model="selectedRow.fname"
-            class="form-control"
-            id="floatingFname"
-            placeholder="textfield"
-            value="store.selecTedUser.fname"
-          />
-          <label for="floatingFname">Fname</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="textfield"
-            v-model="selectedRow.lname"
-            class="form-control"
-            id="floatingLname"
-            placeholder="textfield"
-          />
-          <label for="floatingLname">Lname</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="email"
-            v-model="selectedRow.email"
-            class="form-control"
-            id="floatingInput"
-            placeholder="name@example.com"
-          />
-          <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="textfield"
-            v-model="selectedRow.address"
-            class="form-control"
-            id="floatingAddress"
-            placeholder="textfield"
-          />
-          <label for="floatingAddress">Address</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="date"
-            v-model="selectedRow.dob"
-            class="form-control"
-            id="floatingDate"
-            placeholder="Passtextfieldword"
-          />
-          <label for="floatingDate">Date Of Birth</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="textfield"
-            v-model="selectedRow.gender"
-            class="form-control"
-            id="floatingGender"
-            placeholder="textfield"
-          />
-          <label for="floatingGender">Gender</label>
-        </div>
-        <div class="form-floating">
-          <input
-            type="password"
-            v-model="selectedRow.password"
-            class="form-control"
-            id="floatingPassword"
-            placeholder="Password"
-          />
-          <label for="floatingPassword">Password</label>
+        <div v-for="(field, index) in formFields" :key="index" class="form-floating">
+        <input v-model="selectedRow[field.name]" :type="field.type" :id="'floating'+selectedRow.name" :name="selectedRow.name" class="form-control">
+        <label :for="'floating'+field.name">{{ field.label }}:</label>
+        <div v-if="errorMessages[field.name]" style="color: red;">{{ errorMessages[field.name] }}</div>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Update</button>
-        <button class="w-100 btn btn-lg">Cancel</button>
       </form>
     </div>
   </div>
@@ -90,13 +21,26 @@ import { toast } from 'vue3-toastify'
 import { userDataStore } from '/src/storeState/userData'
 import { ref } from 'vue'
 import 'vue3-toastify/dist/index.css'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const store = userDataStore()
-let selectedRow = ref([''])
+const selectedRow = ref([''])
+const errorMessages = ref([''])
+
+const formFields = [
+      { name: 'fname', label: 'fname', type: 'text' },
+      { name: 'lname', label: 'lname', type: 'text' },
+      { name: 'email', label: 'email', type: 'text' },
+      { name: 'address', label: 'Address', type: 'text' },
+      { name: 'gender', label: 'Gender', type: 'text' },
+      { name: 'dob', label: 'Dob', type: 'date' },
+];
 
 selectedRow.value = store.selecTedUser
 
 const handleSubmit = async () => {
+  errorMessages.value = {};
   try {
     let response = await axios.put('users/' + selectedRow.value.userId, {
       fname: selectedRow.value.fname,
@@ -112,17 +56,38 @@ const handleSubmit = async () => {
       localStorage.setItem('token', response.data)
       store.tokem = 'jkhfdsjk2kdhkahdka'
       toast.success('User Updated Sucessfully..', {
-        autoClose: 1000
+        autoClose: 1000,
+        onClose: () => {
+      router.push("/userDash")
+  }
       })
+
     } else {
       toast.error('Update Failed.', {
         autoClose: 10000
       })
     }
   } catch (error) {
-    toast.error(error.response.data, {
-      autoClose: 10000
-    })
+    const errorData = error.response.data;
+
+    Object.entries(errorData).forEach(([fieldName, errors]) => {
+      const filteredErrors = errors.filter((error) => error !== undefined);
+
+      const errorMessage = filteredErrors.join(', ');
+
+      if (errorMessage.trim() !== '') {
+        errorMessages.value[fieldName] = errorMessage || "";
+      }
+    });
+
   }
 }
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 5px;
+  font-size: 14px;
+}
+</style>

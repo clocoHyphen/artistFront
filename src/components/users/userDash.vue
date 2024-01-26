@@ -4,26 +4,28 @@
   <table>
     <thead>
       <tr>
+        <th>Id</th>
         <th>Fname</th>
         <th>Lname</th>
         <th>Email</th>
         <th>Dob</th>
-        <th>Gender</th>
         <th>Address</th>
+        <th>Role Id</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="item in store.allUserData" v-bind:key="item.userId">
+        <td>{{ item.userId }}</td>
         <td>{{ item.fname }}</td>
         <td>{{ item.lname }}</td>
         <td>{{ item.email }}</td>
         <td>{{ item.dob }}</td>
-        <td>{{ item.gender }}</td>
         <td>{{ item.address }}</td>
+        <td>{{ item.role_id }}</td>
         <td>
           <button @click="toggleEdit(item)">Edit</button>
-          <button>Show</button>
+          <button @click="toggleEdit(item)">Show</button>
           <button @click="deleteUser(item)">Delete</button>
         </td>
       </tr>

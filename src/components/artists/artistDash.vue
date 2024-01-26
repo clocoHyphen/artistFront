@@ -21,7 +21,7 @@
         <td>{{ item.count }}</td>
         <td>
           <button @click="showSongs(item)">Songs</button>
-          <button @click="toggleEdit(item)">Edit</button>
+              <!-- <button @click="toggleEdit(item)">Edit</button> -->
           <button @click="deleteUser(item)">Delete</button>
         </td>
       </tr>
@@ -79,9 +79,9 @@ const showSongs = (item) => {
   router.push('/musicDash')
 }
 
-const toggleEdit = (item) => {
-  store.selecTedUser = item
-}
+// const toggleEdit = (item) => {
+//   store.selecTedUser = item
+// }
 </script>
 
 <style scoped>
